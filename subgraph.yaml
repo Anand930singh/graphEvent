@@ -1,0 +1,47 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: GrgVault
+    network: arbitrum-one
+    source:
+      address: "0xE86a667F239A2531C9d398E81154ba125030497e"
+      abi: GrgVault
+      startBlock: 53460078
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AuthorizedAddressAdded
+        - AuthorizedAddressRemoved
+        - Deposit
+        - GrgProxySet
+        - InCatastrophicFailureMode
+        - OwnershipTransferred
+        - StakingProxySet
+        - Withdraw
+      abis:
+        - name: GrgVault
+          file: ./abis/GrgVault.json
+      eventHandlers:
+        - event: AuthorizedAddressAdded(indexed address,indexed address)
+          handler: handleAuthorizedAddressAdded
+        - event: AuthorizedAddressRemoved(indexed address,indexed address)
+          handler: handleAuthorizedAddressRemoved
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: GrgProxySet(address)
+          handler: handleGrgProxySet
+        - event: InCatastrophicFailureMode(address)
+          handler: handleInCatastrophicFailureMode
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: StakingProxySet(address)
+          handler: handleStakingProxySet
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+      file: ./src/grg-vault.ts
